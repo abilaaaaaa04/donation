@@ -27,14 +27,34 @@
     }
 
     /* Header Styles */
+    body {
+        font-family: 'Rubik', sans-serif;
+        color: var(--text-color);
+        background-color: #f5f5f5;
+        padding-top: 70px;
+        /* Sesuaikan dengan tinggi header */
+    }
+
+
+    /* Header Styles */
     .main-header {
         background-color: var(--primary-color);
         background-image: linear-gradient(135deg, var(--primary-color), var(--dark-color)),
             url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
         color: var(--text-light);
         padding: 0;
-        position: relative;
+        position: fixed;
+        /* Bikin header tetap */
+        top: 0;
+        /* Tempel ke atas */
+        left: 0;
+        width: 100%;
+        /* Full lebar */
+        z-index: 999;
+        /* Di atas elemen lain */
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        height: 70px;
+        /* Tambahkan tinggi tetap jika diperlukan */
     }
 
     .header-container {
