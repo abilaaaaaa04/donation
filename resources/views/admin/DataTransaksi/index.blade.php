@@ -201,21 +201,21 @@
                 <h3>Total Transaksi</h3>
                 <div class="number">{{ count($transaksi) }}</div>
                 <div class="trend">
-                    <i class="fa fa-arrow-up"></i> 12% dari bulan lalu
+                    <i class="fa fa-arrow-up"></i> Total Transaksi Yang masuk 
                 </div>
             </div>
             <div class="stat-card">
                 <h3>Total Donasi</h3>
                 <div class="number">
-                    Rp. {{ number_format($transaksi->where('bayar', dibayar)->sum('jumlah_donasi'), 0, ',', '.') }}
+                    Rp. {{ number_format($transaksi->where('bayar', 'dibayar')->sum('jumlah_donasi'), 0, ',', '.') }}
                 </div>
                 <div class="trend">
-                    <i class="fa fa-arrow-up"></i> 8% dari bulan lalu
+                    <i class="fa fa-arrow-up"></i>Total Keseluruhan Donasi Yang Masuk
                 </div>
             </div>
             <div class="stat-card">
                 <h3>Menunggu Pembayaran</h3>
-                <div class="number">{{ $transaksi->where('bayar', 0)->count() }}</div>
+                <div class="number">{{ $transaksi->where('bayar', 'belum dibayar')->count() }}</div>
                 <div class="trend">
                     <i class="fa fa-clock-o"></i> Perlu dikonfirmasi
                 </div>
@@ -224,14 +224,6 @@
 
         <div class="chart-box">
             <h4>Data Transaksi</h4>
-
-            <div class="search-container">
-                <form method="GET" action="{{ route('admin.transaksi.index') }}">
-                    <input type="text" name="kode_transaksi" value="{{ request('kode_transaksi') }}" class="form-control"
-                        placeholder="Cari kode transaksi..." />
-                    <button type="submit" class="btn"><i class="fa fa-search"></i> Cari</button>
-                </form>
-            </div>
 
             <div class="table-responsive">
                 <table class="table table-striped align-middle">
@@ -279,10 +271,6 @@
                                 </td>
 
                                 <td class="action-buttons">
-                                    <a href="{{ route('admin.transaksi.edit', $rows->id_transaksi) }}" class="text-success"
-                                        title="Edit">
-                                        <i class="fa fa-edit fa-lg"></i>
-                                    </a>
                                     <a href="{{ route('admin.transaksi.delete', $rows->id_transaksi) }}"
                                         class="text-danger" title="Hapus"
                                         onclick="return confirm('Apakah anda yakin akan menghapus data transaksi ini?');">

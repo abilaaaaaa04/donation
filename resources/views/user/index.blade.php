@@ -431,9 +431,7 @@
     /* About section */
     .about-section {
         padding: 80px 0;
-        background:
-            linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-            url('/images/about-bg.jpg');
+        background: linear-gradient(#198754, #166921);
         /* ganti path ini sesuai gambarmu */
         background-size: cover;
         background-position: center;
@@ -732,26 +730,17 @@
                                 <p class="donation-description">{!! Str::limit(strip_tags($item->deskripsi_donasi), 80) !!}</p>
 
                                 @php
-                                    $persen =
-                                        $item->target_donasi > 0
-                                            ? round(($item->perolehan_donasi / $item->target_donasi) * 100)
-                                            : 0;
+                                    $perolehan = $item->perolehan_donasi ?? 0;
+                                    $target = $item->target_donasi ?? 0;
+
+                                    $persen = $target > 0 ? round(($perolehan / $target) * 100) : 0;
                                     $hariTersisa = Carbon::now()->diffInDays(Carbon::parse($item->masa_aktif), false);
                                     $warnaBar =
                                         $persen >= 100 ? 'bg-primary' : ($persen >= 50 ? 'bg-success' : 'bg-warning');
                                 @endphp
 
-                                <div class="donation-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar {{ $warnaBar }}" style="width: {{ $persen }}%;"
-                                            role="progressbar" aria-valuenow="{{ $persen }}" aria-valuemin="0"
-                                            aria-valuemax="100">
-                                            {{ $persen }}%
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="donation-footer">
+                                <div class="donation-footer d-flex justify-content-between">
                                     <small>
                                         @if ($hariTersisa > 0)
                                             {{ $hariTersisa }} Hari Tersisa
@@ -759,10 +748,11 @@
                                             Donasi Ditutup
                                         @endif
                                     </small>
-                                    <small>Rp {{ number_format($item->perolehan_donasi, 0, ',', '.') }}</small>
                                 </div>
 
-                                <a href="{{ route('user.detail', $item->id_donasi) }}"class="donation-btn mt-3">Donasi Sekarang</a>
+
+                                <a href="{{ route('user.detail', $item->id_donasi) }}"class="donation-btn mt-3">Donasi
+                                    Sekarang</a>
                             </div>
                         </div>
                     </div>
@@ -801,6 +791,55 @@
         </div>
     </section>
 
+    {{-- table transaksi --}}
+    <section class="mt-5" id="transaksi">
+        <div class="container">
+            <div class="section-title text-center mb-4">
+                <h2>Transaksi Donasi Terbaru</h2>
+                <p>Berikut adalah daftar donasi terbaru dari para donatur</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card shadow-sm border-0 rounded-4">
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-bordered mb-0">
+                                    <thead class="table-success text-white" style="background-color: #198754;">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Donatur</th>
+                                            <th>Program Donasi</th>
+                                            <th>Jumlah</th>
+                                            <th>Tanggal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($transaksi as $t)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $t->nama_donatur }}</td>
+                                                <td>{{ $t->donasi->nama_donasi ?? '-' }}</td>
+                                                <td class="text-success fw-bold">Rp.
+                                                    {{ number_format($t->jumlah_donasi, 0, ',', '.') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($t->tgl_transaksi)->format('d-m-Y') }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center text-muted">Belum ada transaksi masuk.
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+        </div>
+    </section>
+
+
     <!-- Partner Section -->
     <section class="partner-section" id="partner">
         <div class="container">
@@ -832,3 +871,47 @@
     <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
 
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animasi Progress Bar
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                const target = parseInt(bar.getAttribute('data-target'));
+                let width = 0;
+
+                const interval = setInterval(() => {
+                    if (width >= target) {
+                        clearInterval(interval);
+                    } else {
+                        width++;
+                        bar.style.width = width + '%';
+                        bar.querySelector('.progress-text').textContent = width + '%';
+                    }
+                }, 10); // makin kecil makin cepat
+            });
+
+            // Animasi Jumlah Donasi
+            document.querySelectorAll('.donation-amount').forEach(amountEl => {
+                const targetAmount = parseInt(amountEl.getAttribute('data-amount'));
+                let current = 0;
+
+                const increment = Math.ceil(targetAmount / 100); // percepat animasi jika besar
+
+                const interval = setInterval(() => {
+                    if (current >= targetAmount) {
+                        clearInterval(interval);
+                        amountEl.textContent = 'Rp ' + numberFormat(targetAmount);
+                    } else {
+                        current += increment;
+                        amountEl.textContent = 'Rp ' + numberFormat(current);
+                    }
+                }, 15);
+            });
+
+            function numberFormat(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+        });
+    </script>
+@endpush

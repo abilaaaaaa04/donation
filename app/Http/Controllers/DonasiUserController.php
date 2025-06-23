@@ -17,7 +17,13 @@ class DonasiUserController extends Controller
     public function index()
     {
         $donasi = DataDonasi::all();
-        return view('user.index', compact('donasi'));
+        $transaksi = Donatur::where('bayar', 'dibayar')
+            ->with('donasi')
+            ->orderBy('tgl_transaksi', 'desc')
+            ->take(7) // ⬅ Ambil hanya 7 data
+            ->get();
+
+        return view('user.index', compact('donasi', 'transaksi'));
     }
 
     /**
@@ -30,7 +36,7 @@ class DonasiUserController extends Controller
         return view('user.detail', compact('donasi', 'hariTersisa'));
     }
 
-     public function register($id_donasi)
+    public function register($id_donasi)
     {
         $donasi = DataDonasi::where('id_donasi', $id_donasi)->firstOrFail();
         return view('user.form', compact('donasi'));
@@ -56,6 +62,10 @@ class DonasiUserController extends Controller
             'kode_transaksi'   => 'LMI-' . strtoupper(Str::random(8)),
             'tgl_transaksi'    => Carbon::now(),
         ]);
+
+        $donasi = DataDonasi::find($request->id_donasi);
+        $donasi->perolehan_donasi += $request->jumlah_donasi;
+        $donasi->save();
 
         return redirect()->route('donasi.konfirmasi', $donatur->id_transaksi);
     }
@@ -88,7 +98,5 @@ class DonasiUserController extends Controller
         ];
 
         return view('user.transaksi', compact('donatur', 'banks'));
-
     }
-
 }
