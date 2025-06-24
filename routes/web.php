@@ -50,7 +50,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/transaksi/{id}/bayar', [TransaksiController::class, 'editBayar'])->name('admin.transaksi.editBayar');
        
         // Laporan
-        Route::get('/laporan', [LaporanController::class, 'index'])->name('admin.laporan.index');
+        Route::get('/laporan/index', [LaporanController::class, 'index'])->name('admin.laporan.index');
         Route::get('/laporan/print', [LaporanController::class, 'print'])->name('admin.laporan.print');
     });
 });
