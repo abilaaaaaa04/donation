@@ -46,7 +46,6 @@ class TransaksiController extends Controller
     {
         $transaksi = Donatur::findOrFail($id);
         $transaksi->delete();
-
         return redirect()->route('admin.transaksi.index')->with('success', 'Data transaksi berhasil dihapus.');
     }
 

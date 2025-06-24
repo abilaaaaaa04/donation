@@ -12,13 +12,13 @@ class LaporanController extends Controller
     {
        $transaksi = Donatur::where('bayar', 'dibayar')->orderBy('tgl_transaksi', 'desc')->get();
         $total = $transaksi->sum('jumlah_donasi');
-        return view('admin.laporan.index', compact('transaksi', 'total'));
+        return view('admin.Laporan.index', compact('transaksi', 'total'));
     }
 
     public function print()
     {
       $transaksi = Donatur::where('bayar', 'dibayar')->orderBy('tgl_transaksi', 'desc')->get();
         $total = $transaksi->sum('jumlah_donasi');
-        return view('admin.laporan.print', compact('transaksi', 'total'));
+        return view('admin.Laporan.print', compact('transaksi', 'total'));
     }
 }
