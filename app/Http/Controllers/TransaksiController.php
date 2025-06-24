@@ -61,7 +61,7 @@ class TransaksiController extends Controller
         if (is_null($transaksi->bayar)) {
             $transaksi->bayar = 'dibayar';
         } else {
-            $transaksi->bayar = null;
+            $transaksi->bayar = 0;
         }
 
         $transaksi->save();

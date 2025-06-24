@@ -18,7 +18,7 @@ class CreateDataTransaksiTable extends Migration
             $table->integer('jumlah_donasi');
             $table->text('kode_transaksi');
             $table->date('tgl_transaksi');
-            $table->tinyInteger('bayar')->default(0); // bisa dikasih default 0 jika belum bayar
+            $table->integer('bayar')->default(0); // bisa dikasih default 0 jika belum bayar
         });
     }
 
