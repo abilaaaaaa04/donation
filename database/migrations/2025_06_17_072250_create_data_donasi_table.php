@@ -14,7 +14,7 @@ class CreateDataDonasiTable extends Migration
             $table->text('nama_donasi');
             $table->text('kategori_donasi');
             $table->text('target_donasi');
-            $table->bigint('perolehan_donasi');
+            $table->bigInteger('perolehan_donasi');
             $table->date('masa_donasi');
             $table->text('deskripsi_donasi');
             $table->date('tgl_donasi');
