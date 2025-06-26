@@ -249,8 +249,8 @@
                                 <td>{{ $rows->kode_transaksi }}</td>
                                 <td>{{ \Carbon\Carbon::parse($rows->tgl_transaksi)->translatedFormat('d M Y') }}</td>
                                 <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        @if (is_null($rows->bayar))
+                                   <div class="d-flex align-items-center gap-2">
+                                       @if ($rows->bayar == 0)
                                             <a href="{{ route('admin.transaksi.editBayar', $rows->id_transaksi) }}"
                                                 class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
                                                 onclick="return confirm('Konfirmasi pembayaran untuk transaksi ini?')">
@@ -260,6 +260,12 @@
                                             <span class="badge bg-success px-3 py-1">
                                                 <i class="bi bi-patch-check-fill me-1"></i> Dibayar
                                             </span>
+
+                                            <a href="{{ route('admin.transaksi.editBayar', $rows->id_transaksi) }}"
+                                                class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
+                                                onclick="return confirm('Yakin ingin batalkan pembayaran ini?')">
+                                                <i class="bi bi-x-circle"></i> Batalkan
+                                            </a>
                                         @endif
                                     </div>
                                 </td>
