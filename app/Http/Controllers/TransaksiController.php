@@ -56,12 +56,8 @@ class TransaksiController extends Controller
     {
         $transaksi = Donatur::findOrFail($id);
 
-        // Toggle status bayar
-        if (is_null($transaksi->bayar)) {
-            $transaksi->bayar = 'dibayar';
-        } else {
-            $transaksi->bayar = 0;
-        }
+        // Toggle status bayar: 0 (belum bayar), 1 (sudah bayar)
+        $transaksi->bayar = $transaksi->bayar == 1 ? 0 : 1;
 
         $transaksi->save();
 
