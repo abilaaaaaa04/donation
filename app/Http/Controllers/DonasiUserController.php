@@ -17,7 +17,7 @@ class DonasiUserController extends Controller
     public function index()
     {
         $donasi = DataDonasi::all();
-        $transaksi = Donatur::where('bayar', 'dibayar')
+        $transaksi = Donatur::where('bayar', 1)
             ->with('donasi')
             ->orderBy('tgl_transaksi', 'desc')
             ->take(7) // ⬅ Ambil hanya 7 data
