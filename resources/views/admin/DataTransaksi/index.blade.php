@@ -262,11 +262,11 @@
                                                 <i class="bi bi-patch-check-fill me-1"></i> Dibayar
                                             </span>
 
-                                            <a href="{{ route('admin.transaksi.editBayar', $rows->id_transaksi) }}"
+                                            {{-- <a href="{{ route('admin.transaksi.editBayar', $rows->id_transaksi) }}"
                                                 class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
                                                 onclick="return confirm('Yakin ingin batalkan pembayaran ini?')">
                                                 <i class="bi bi-x-circle"></i> Batalkan
-                                            </a>
+                                            </a> --}}
                                         @endif
                                     </div>
                                 </td>
